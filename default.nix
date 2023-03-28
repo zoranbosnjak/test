@@ -46,7 +46,7 @@ let
     ];
     installPhase = ''
       mkdir -p $out
-      echo "Hello World..." > $out/index.html
+      echo "Hello world..." > $out/index.html
     '';
   };
 
