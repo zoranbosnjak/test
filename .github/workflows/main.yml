@@ -19,5 +19,4 @@ jobs:
               with:
                 folder: output
                 single-commit: true
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
