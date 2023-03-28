@@ -1,4 +1,4 @@
-{ gitrev ? null
+{ gitrev ? "devel"
 }:
 
 let
@@ -28,13 +28,11 @@ let
   };
 
   libPython = import ../support/Language/Python/lib.nix { reference = "todo"; };
-
-  envVars = ''
-    export SHORT_GITREV=${shortGitrev}
-  '';
   */
 
   envVars = ''
+    export GITREV=${gitrev}
+    export timestamp=$(git show -s --format=%ct)
   '';
 
   drv = packages.stdenv.mkDerivation {
@@ -42,11 +40,13 @@ let
     preBuild = envVars;
     src = ./.;
     buildInputs = [
+      packages.git
       packages.zip
     ];
     installPhase = ''
       mkdir -p $out
-      echo "Hello world..." > $out/index.html
+      echo $timestamp > $out/index.html
+      echo $GITREV >> $out/index.html
     '';
   };
 
