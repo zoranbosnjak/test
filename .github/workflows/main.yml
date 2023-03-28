@@ -4,14 +4,8 @@ jobs:
     main:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2.3.4
-              with:
-                persist-credentials: false
+            - uses: actions/checkout@v3
             - uses: cachix/install-nix-action@master
-            - uses: cachix/cachix-action@master
-              with:
-                name: zoranbosnjak
-                signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
             - name: rebuild
               run: |
                 nix-build --argstr gitrev $GITHUB_SHA
@@ -19,17 +13,10 @@ jobs:
                 find output -type d | xargs chmod 755
                 find output -type f | xargs chmod 644
                 touch output/.nojekyll
-            - name: show event
-              run: echo ${{ github.event_name }}
-            - name: show ref
-              run: echo ${{ github.ref }}
             - name: deploy
               if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-              uses: JamesIves/github-pages-deploy-action@3.7.1
+              uses: JamesIves/github-pages-deploy-action@v4
               with:
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                BRANCH: gh-pages
-                FOLDER: output
-                CLEAN: true
-                SINGLE_COMMIT: true
+                folder: output
+                single-commit: true
 
