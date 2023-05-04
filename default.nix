@@ -46,6 +46,7 @@ let
     installPhase = ''
       mkdir -p $out
       echo $timestamp > $out/index.html
+      echo "test" >> $out/index.html
       echo $GITREV >> $out/index.html
     '';
   };
