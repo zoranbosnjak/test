@@ -19,4 +19,14 @@ jobs:
           git add date.txt
           git commit -m "Periodic test..."
           git push
-
+      - name: Trigger rebuild
+        if: env.REBUILD == 'true'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'main.yml',
+              ref: 'main',
+            })
