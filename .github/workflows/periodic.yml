@@ -19,6 +19,7 @@ jobs:
           git add date.txt
           git commit -m "Periodic test..."
           git push
+          echo "REBUILD=true" >> "$GITHUB_ENV"
       - name: Trigger rebuild
         if: env.REBUILD == 'true'
         uses: actions/github-script@v6
